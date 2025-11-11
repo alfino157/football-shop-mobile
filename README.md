@@ -1,4 +1,6 @@
-# Tugas 7
+
+<details>
+  <summary> Tugas 7 </summary>
 
 ## Jelaskan apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget.
 Widget tree dalam Flutter adalah susunan hierarki dari semua widget yang membentuk tampilan aplikasi. Setiap elemen di layar, seperti teks, tombol, gambar, atau tata letak, merupakan bagian dari widget tree. Hubungan antar widget ini bersifat seperti pohon keluarga, di mana ada parent dan child . Parent widget berperan untuk membungkus dan mengatur posisi, ukuran, serta perilaku anaknya, sedangkan child widget menjadi isi atau konten yang ditampilkan di dalam parent tersebut.
@@ -41,4 +43,20 @@ Dalam metode build, BuildContext digunakan sebagai parameter yang memberi akses 
 _Hot reload_ adalah fitur di Flutter yang memungkinkan pengembang melihat perubahan kode secara langsung tanpa kehilangan state aplikasi. Ketika kita menyimpan perubahan, Flutter hanya memperbarui bagian kode yang berubah dan mempertahankan data serta posisi terakhir di aplikasi. Ini dapat membuat proses pengembangan lebih cepat dan efisien karena tidak perlu menjalankan ulang aplikasi dari awal.
 
 Sementara itu, _hot restart_ akan memuat ulang seluruh aplikasi dari awal dan menghapus semua state yang tersimpan. Flutter akan membangun ulang seluruh widget tree seperti saat pertama kali dijalankan. _Hot restart_ biasanya digunakan jika perubahan kode terjadi di bagian inisialisasi variabel global, struktur state, atau hal-hal yang tidak bisa diperbarui dengan _hot reload_.
+</details>
+
+# Tugas 8
+
+## Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement() pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Football Shop kamu?
+Pada Flutter, perbedaan utama antara Navigator.push() dan Navigator.pushReplacement() terletak pada cara keduanya menambahkan halaman ke dalam tumpukan navigasi. Navigator.push() akan menambahkan halaman baru di atas halaman yang sedang aktif, sehingga pengguna masih dapat kembali ke halaman sebelumnya dengan tombol “back”. Sementara itu, Navigator.pushReplacement() menggantikan halaman saat ini dengan halaman baru dan menghapus halaman lama dari tumpukan, jadi pengguna tidak bisa kembali ke halaman sebelumnya. Dalam aplikasi Football Shop saya, Navigator.push() lebih cocok digunakan saat membuka halaman tambah produk dari halaman utama, karena pengguna mungkin ingin kembali untuk melihat daftar produk. Sebaliknya, Navigator.pushReplacement() lebih cocok dipakai dari drawer ketika ingin berpindah antar halaman utama, misalnya dari “Add Product” ke “Homepage”, agar navigasi terasa lebih bersih tanpa menumpuk banyak halaman.
+
+## Bagaimana kamu memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk membangun struktur halaman yang konsisten di seluruh aplikasi?
+Struktur aplikasi Football Shop memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk menciptakan tampilan halaman yang seragam dan mudah dipahami. Scaffold berfungsi sebagai kerangka dasar yang menyediakan struktur umum seperti area konten, app bar, dan drawer. AppBar digunakan untuk menampilkan judul aplikasi dan memperkuat identitas tiap halaman, sedangkan Drawer mempermudah navigasi antar halaman dengan tampilan menu yang konsisten di semua bagian aplikasi. Dengan kombinasi ketiganya, setiap halaman di Football Shop saya memiliki tata letak yang rapi dan pengalaman pengguna yang konsisten tanpa harus menulis ulang struktur dasar di setiap file.
+
+## Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti Padding, SingleChildScrollView, dan ListView saat menampilkan elemen-elemen form? Berikan contoh penggunaannya dari aplikasi kamu.
+Penggunaan layout widget seperti Padding, SingleChildScrollView, dan ListView membantu mengatur tata letak agar elemen-elemen form tampil lebih rapi, proporsional, dan mudah diakses. Padding digunakan untuk memberi jarak antar elemen agar tampilan tidak terlalu rapat dan nyaman dilihat. SingleChildScrollView memungkinkan halaman digulir saat konten form lebih panjang dari layar, sehingga semua input tetap dapat diisi dengan mudah di berbagai ukuran perangkat. Sementara ListView berguna ketika menampilkan daftar elemen yang banyak dan dinamis. Dalam implementasi aplikasi Football Shop, saya menggunakan widget Padding  di setiap TextFormField agar setiap kolom input memiliki ruang yang cukup dan SingleChildScrollView untuk membungkus seluruh form tambah produk agar pengguna bisa menggulir ke bawah tanpa memotong bagian form yang panjang.
+
+## Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
+Untuk saat ini, saya baru menggantikan beberapa background colour menjadi warna ungu agar selaras dengan design utama pada website.
+
 
