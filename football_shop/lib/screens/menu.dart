@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:football_shop/screens/productlist_form.dart';
+import 'package:football_shop/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -10,7 +12,7 @@ class MyHomePage extends StatelessWidget {
       // Bagian atas halaman (AppBar)
       appBar: AppBar(
         title: const Text(
-          'Football Shop',
+          'Onif Sportswear',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -18,6 +20,7 @@ class MyHomePage extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
+      drawer: LeftDrawer(),
 
       // Bagian isi utama (body)
       body: Padding(
@@ -25,6 +28,18 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // welcoming text
+            const Center(
+              child: Text(
+                'Welcome to Onif Sportswear!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+
             // Menampilkan 3 tombol secara horizontal dalam 1 baris (Row)
             Row(
               children: [
@@ -124,25 +139,19 @@ class MyHomePage extends StatelessWidget {
                                   "Kamu telah menekan tombol Create Product"),
                             ),
                           );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProductFormPage()),
+                        );
                       },
                     ),
                   ),
                 ),
               ],
             ),
-
             const SizedBox(height: 24),
 
-            // welcoming text
-            const Center(
-              child: Text(
-                'Selamat datang di Football Shop!',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                ),
-              ),
-            ),
           ],
         ),
       ),
