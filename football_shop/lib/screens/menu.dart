@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:football_shop/screens/product_entry_list.dart';
 import 'package:football_shop/screens/productlist_form.dart';
 import 'package:football_shop/widgets/left_drawer.dart';
+import 'package:football_shop/screens/login.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -8,6 +12,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Scaffold menyediakan struktur dasar halaman dengan AppBar dan body.
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       // Bagian atas halaman (AppBar)
       appBar: AppBar(
@@ -19,6 +24,37 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            onPressed: () async {
+              // URL backend sesuai platform
+              final response = await request.logout(
+                  "http://localhost:8000/auth/logout/");
+
+              if (!context.mounted) return;
+
+              String message = response["message"];
+
+              if (response['status'] == true) {
+                String uname = response["username"];
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("$message See you again, $uname.")),
+                );
+
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(message)),
+                );
+              }
+            },
+          ),
+        ],
       ),
       drawer: LeftDrawer(),
 
@@ -49,7 +85,7 @@ class MyHomePage extends StatelessWidget {
                     height: 60,
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue, // warna biru
+                        backgroundColor: Colors.yellow, // warna biru
                         textStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -62,13 +98,11 @@ class MyHomePage extends StatelessWidget {
                       label: const Text('All Products',
                           style: TextStyle(color: Colors.white)),
                       onPressed: () {
-                        ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                  "Kamu telah menekan tombol All Products"),
-                            ),
+                        Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ProductEntryListPage()
+                              ),
                           );
                       },
                     ),
@@ -97,15 +131,13 @@ class MyHomePage extends StatelessWidget {
                       label: const Text('My Products',
                           style: TextStyle(color: Colors.white)),
                       onPressed: () {
-                        ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                  "Kamu telah menekan tombol My Products"),
-                            ),
-                          );
-                      },
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ProductEntryListPage(isMyProducts: true)
+                          ),
+                        );
+                      }
                     ),
                   ),
                 ),

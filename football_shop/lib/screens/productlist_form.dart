@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:football_shop/screens/product_entry_list.dart';
 import 'package:football_shop/widgets/left_drawer.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:football_shop/screens/menu.dart';
 
 class ProductFormPage extends StatefulWidget {
   const ProductFormPage({super.key});
@@ -32,6 +37,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text("Add Product")),
@@ -238,44 +244,44 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title:
-                                  const Text('Product succesfully saved!'),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Name: $_name'),
-                                    Text('Brand: $_brand'),
-                                    Text('Description: $_description'),
-                                    Text('Category: $_category'),
-                                    Text('Thumbnail: $_thumbnail'),
-                                    Text('Price: Rp $_price'),
-                                    Text('Stock: $_stock unit'),
-                                    Text(
-                                        'Is featured: ${_isFeatured ? "Yes" : "No"}'),
-                                  ],
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context); // close alert
-                                    Navigator.pop(context); // back to home
-                                    _formKey.currentState!.reset();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
+                        final response = await request.postJson(
+                          // Gunakan URL sesuai platform (chrome vs emulator)
+                          "http://localhost:8000/create-flutter/",
+                          jsonEncode({
+                            "name": _name,
+                            "brand": _brand,
+                            "description": _description,
+                            "category": _category,
+                            "thumbnail": _thumbnail,
+                            "price": _price.toInt(),
+                            "stock": _stock,
+                            "is_featured": _isFeatured,
+                          }),
                         );
+
+                        if (!mounted) return;
+
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Product successfully saved!")),
+                          );
+
+                          // Setelah selesai create → kembali ke ProductList & refresh
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProductEntryListPage(),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Something went wrong, please try again."),
+                            ),
+                          );
+                        }
                       }
                     },
                     child: const Text(
